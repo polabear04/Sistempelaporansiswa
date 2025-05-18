@@ -11,6 +11,7 @@ class LaporanController extends Controller
 {
     public function showDraft()
     {
+
         $laporan = null;
 
         if (Auth::user()->is_admin) {

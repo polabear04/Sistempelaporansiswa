@@ -44,7 +44,7 @@
                                             @endauth
                                             <td>{{ $lapor->id_laporan }}</td>
                                             <td>{{ $lapor->nama }}</td>
-                                            <td class="font-weight-bold">{{ $lapor->deskripsi }}</td>
+                                            <td class="font-weight-bold">{{ Str::limit($lapor->deskripsi, 20) }}</td>
                                             <td>{{ \Carbon\Carbon::parse($lapor->tanggal)->format('d M Y') }}</td>
                                             <td class="font-weight-medium">
                                                 @if ($lapor->status === 'diterima')
@@ -56,14 +56,79 @@
                                                 @endif
                                             </td>
                                             <td>
-                                                <form action="{{ route('laporan.destroy', $lapor->id_laporan) }}"
-                                                    method="POST"
-                                                    onsubmit="return confirm('Yakin ingin menghapus laporan ini?');">
-                                                    @csrf
-                                                    @method('DELETE')
-                                                    <button type="submit" class="btn btn-danger btn-sm">Hapus</button>
-                                                </form>
+                                                <div class="d-flex gap-2">
+                                                    <!-- Tombol Preview dengan target modal unik -->
+                                                    <button type="button" class="btn btn-primary btn-sm"
+                                                        data-toggle="modal"
+                                                        data-target="#modalPreview{{ $lapor->id_laporan }}">
+                                                        Preview
+                                                    </button>
+
+                                                    <!-- Modal dengan ID unik sesuai laporan -->
+                                                    <div class="modal fade" id="modalPreview{{ $lapor->id_laporan }}"
+                                                        tabindex="-1" role="dialog"
+                                                        aria-labelledby="modalLabel{{ $lapor->id_laporan }}"
+                                                        aria-hidden="true">
+                                                        <div class="modal-dialog" role="document">
+                                                            <div class="modal-content">
+
+                                                                <!-- Header -->
+                                                                <div class="modal-header">
+                                                                    <h5 class="modal-title"
+                                                                        id="modalLabel{{ $lapor->id_laporan }}">Laporan
+                                                                        lengkap</h5>
+                                                                    <button type="button" class="close"
+                                                                        data-dismiss="modal" aria-label="Close">
+                                                                        <span aria-hidden="true">&times;</span>
+                                                                    </button>
+                                                                </div>
+
+                                                                <!-- Body -->
+                                                                <div class="modal-body">
+                                                                    <form>
+                                                                        @csrf
+                                                                        <div class="form-group">
+                                                                            <label
+                                                                                for="nama{{ $lapor->id_laporan }}">Nama</label>
+                                                                            <input type="text" name="nama"
+                                                                                class="form-control"
+                                                                                id="nama{{ $lapor->id_laporan }}"
+                                                                                value="{{ $lapor->nama }}" disabled>
+                                                                        </div>
+
+                                                                        <div class="form-group">
+                                                                            <label
+                                                                                for="deskripsi{{ $lapor->id_laporan }}">Deskripsi</label>
+                                                                            <textarea name="deskripsi" rows="5" class="form-control" id="deskripsi{{ $lapor->id_laporan }}" disabled>{{ $lapor->deskripsi }}</textarea>
+                                                                        </div>
+
+                                                                        <div class="form-group">
+                                                                            <label
+                                                                                for="tanggal{{ $lapor->id_laporan }}">Tanggal</label>
+                                                                            <input type="text" name="tanggal"
+                                                                                class="form-control"
+                                                                                id="tanggal{{ $lapor->id_laporan }}"
+                                                                                value="{{ \Carbon\Carbon::parse($lapor->tanggal)->format('d M Y') }}"
+                                                                                disabled>
+                                                                        </div>
+                                                                    </form>
+                                                                </div>
+
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <form action="{{ route('laporan.destroy', $lapor->id_laporan) }}"
+                                                        method="POST"
+                                                        onsubmit="return confirm('Yakin ingin menghapus laporan ini?');">
+                                                        @csrf
+                                                        @method('DELETE')
+                                                        <button type="submit"
+                                                            class="btn btn-danger btn-sm">Hapus</button>
+                                                    </form>
+                                                </div>
                                             </td>
+
                                         </tr>
                                     @endforeach
                                 </tbody>
