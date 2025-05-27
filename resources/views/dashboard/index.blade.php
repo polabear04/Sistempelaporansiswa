@@ -26,10 +26,7 @@
                                         <h2 class="mb-0 font-weight-normal" id="temperature"><i
                                                 class="icon-sun mr-2"></i>--<sup>°C</sup></h2>
                                     </div>
-                                    <div class="ml-2">
-                                        <h4 class="location font-weight-normal" id="city">Memuat lokasi...</h4>
-                                        <h6 class="font-weight-normal" id="country">-</h6>
-                                    </div>
+
                                 </div>
 
                             </div>

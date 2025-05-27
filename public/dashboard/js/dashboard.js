@@ -629,38 +629,7 @@
           '</tr>'+
       '</table>';
   }
-  var table = $('#example').DataTable( {
-    "ajax": "/api/data",
-    "columns": [
-        { "data": "Quote" },
-        { "data": "Product" },
-        { "data": "Business" },
-        { "data": "Policy" }, 
-        { "data": "Premium" }, 
-        { "data": "Status" }, 
-        { "data": "Updated" }, 
-        {
-          "className":      'details-control',
-          "orderable":      false,
-          "data":           null,
-          "defaultContent": ''
-        }
-    ],
-    "order": [[1, 'asc']],
-    "paging":   false,
-    "ordering": true,
-    "info":     false,
-    "filter": false,
-    columnDefs: [{
-      orderable: false,
-      className: 'select-checkbox',
-      targets: 0
-    }],
-    select: {
-      style: 'os',
-      selector: 'td:first-child'
-    }
-  } );
+  
 $('#example tbody').on('click', 'td.details-control', function () {
   var tr = $(this).closest('tr');
   var row = table.row( tr );
@@ -678,27 +647,5 @@ $('#example tbody').on('click', 'td.details-control', function () {
 } );
   
   });
-  document.addEventListener('DOMContentLoaded', () => {
-    if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(async position => {
-            const lat = position.coords.latitude;
-            const lon = position.coords.longitude;
-            const apiKey = '8d295bb2623440c68e7ef658223fc36e';
-
-            const response = await fetch(
-                `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${apiKey}&units=metric`
-            );
-            const data = await response.json();
-
-            document.getElementById('temperature').innerHTML =
-                `<i class="icon-sun mr-2"></i>${Math.round(data.main.temp)}<sup>°C</sup>`;
-            document.getElementById('city').textContent = data.name;
-            document.getElementById('country').textContent = data.sys.country;
-        }, () => {
-            document.getElementById('city').textContent = 'Lokasi ditolak';
-        });
-    } else {
-        document.getElementById('city').textContent = 'Geolokasi tidak didukung';
-    }
-});
+ 
 })(jQuery);

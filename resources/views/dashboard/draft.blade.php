@@ -9,7 +9,28 @@
                 <div class="card">
 
                     <div class="card-body">
-                        <p class="card-title mb-0">Daftar Laporan</p>
+                        <p class="card-title mb-2">Daftar Laporan</p>
+                        <form method="GET" action="{{ url('draft') }}"
+                            class="d-flex gap-4 align-items-center flex-wrap">
+                            <input type="text" name="search" placeholder="Cari nama Pelaku"
+                                value="{{ request('search') }}" class="form-input px-3 py-1 border rounded"
+                                style="flex: 1 1 200px; min-width: 150px;" />
+
+                            <select name="filter_date" class="form-select px-3 py-1 border rounded"
+                                style="flex: 1 1 150px; min-width: 150px;">
+                                <option value="">Semua data</option>
+                                <option value="today" {{ request('filter_date') == 'today' ? 'selected' : '' }}>Hari
+                                    Ini</option>
+                                <option value="yesterday" {{ request('filter_date') == 'yesterday' ? 'selected' : '' }}>
+                                    Kemarin</option>
+                                <option value="last_7_days"
+                                    {{ request('filter_date') == 'last_7_days' ? 'selected' : '' }}>7 Hari Terakhir
+                                </option>
+                            </select>
+
+                            <button type="submit" class="btn btn-primary px-4 py-2 mx-2"
+                                style="height: 33px; border-radius: 4px; flex: 0 0 auto;">Cari</button>
+                        </form>
 
                         <div class="table-responsive">
                             @if (session('success'))
@@ -23,11 +44,11 @@
                                     <tr>
                                         @auth
                                             @if (Auth::user()->is_admin)
-                                                <th>User</th>
+                                                <th>NIS User</th>
                                             @endif
                                         @endauth
                                         <th>Id Laporan</th>
-                                        <th>Nama</th>
+                                        <th>Nama Pelaku</th>
                                         <th>Deskripsi</th>
                                         <th>Tanggal</th>
                                         <th>Status</th>
@@ -35,11 +56,11 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach ($laporan as $lapor)
+                                    @forelse ($laporan as $lapor)
                                         <tr>
                                             @auth
                                                 @if (Auth::user()->is_admin)
-                                                    <td>{{ $lapor->user->nama ?? '-' }}</td>
+                                                    <td>{{ $lapor->user->NIS ?? '-' }}</td>
                                                 @endif
                                             @endauth
                                             <td>{{ $lapor->id_laporan }}</td>
@@ -130,7 +151,11 @@
                                             </td>
 
                                         </tr>
-                                    @endforeach
+                                    @empty
+                                        <tr>
+                                            <td colspan="10" class="text-center">Tidak ada laporan yang di ajukan</td>
+                                        </tr>
+                                    @endforelse
                                 </tbody>
                             </table>
 

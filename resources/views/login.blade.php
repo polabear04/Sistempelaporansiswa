@@ -27,7 +27,7 @@
             <div class="col-md-6 right-box">
                 <div class="row align-items-center">
                     <div class="header-text mb-4">
-                        <h2>Selamat datang</h2>
+                        <h2>Selamat datang di</h2>
                         <p>Pelaporan Siswa</p>
                     </div>
                     @if ($errors->any())

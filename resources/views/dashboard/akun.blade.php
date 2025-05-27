@@ -18,7 +18,27 @@
                                 Daftarkan akun
                             </button>
                         </div>
+                        <form method="GET" action="{{ url('akun') }}"
+                            class="d-flex gap-4 align-items-center flex-wrap">
+                            <input type="text" name="search" placeholder="Cari berdasarkan nama / NIS"
+                                value="{{ request('search') }}" class="form-input px-3 py-1 border rounded"
+                                style="flex: 1 1 200px; min-width: 150px;" />
 
+                            <select name="filter_role" class="form-select px-3 py-1 border rounded"
+                                style="flex: 1 1 150px; min-width: 150px;">
+                                <option value="" {{ request('filter_role') == '' ? 'selected' : '' }}>Semua
+                                    Role</option>
+                                <option value="admin" {{ request('filter_role') == 'admin' ? 'selected' : '' }}>Admin
+                                </option>
+                                <option value="guru" {{ request('filter_role') == 'guru' ? 'selected' : '' }}>Guru
+                                </option>
+                                <option value="murid" {{ request('filter_role') == 'murid' ? 'selected' : '' }}>Murid
+                                </option>
+                            </select>
+
+                            <button type="submit" class="btn btn-primary px-4 py-2 mx-2"
+                                style="height: 33px; border-radius: 4px; flex: 0 0 auto;">Cari</button>
+                        </form>
                         <!-- Modal -->
                         <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog"
                             aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -116,14 +136,9 @@
                                             </div>
                                         </form>
                                     </div>
-
-
-                                    <!-- Footer -->
-
                                 </div>
                             </div>
                         </div>
-
 
                         <!-- Table -->
                         <div class="table-responsive">
@@ -152,7 +167,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach ($users as $user)
+                                    @forelse ($users as $user)
                                         <tr>
                                             <td>{{ $user->NIS }}</td>
                                             <td>{{ $user->nama }}</td>
@@ -170,7 +185,12 @@
                                                 </form>
                                             </td>
                                         </tr>
-                                    @endforeach
+                                    @empty
+                                        <tr>
+                                            <td colspan="10" class="text-center">Tidak ada akun yang terdaftar
+                                            </td>
+                                        </tr>
+                                    @endforelse
                                 </tbody>
                             </table>
                         </div>

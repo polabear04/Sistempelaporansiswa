@@ -2,36 +2,56 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
 use Illuminate\Http\Request;
+use App\Models\Chat;
 use App\Models\Laporan;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Auth;
 
 class LaporanController extends Controller
 {
-    public function showDraft()
+    public function showDraft(Request $request)
     {
+        $laporan = Laporan::with('user');
 
-        $laporan = null;
-
+        // Role logic
         if (Auth::user()->is_admin) {
-            // Admin melihat semua laporan tanpa filter
-            $laporan = Laporan::with('user')->get();
+            // Admin: semua laporan
         } elseif (Auth::user()->role === 'guru') {
-            // Guru hanya melihat laporan yang diajukan oleh murid dengan status diterima atau ditolak
-            $laporan = Laporan::with('user')
-                ->whereIn('status', ['diterima', 'ditolak']) // Filter status diterima dan ditolak
-                ->whereHas('user', function ($query) {
-                    // Pastikan laporan hanya untuk murid
-                    $query->where('role', 'murid');
-                })
-                ->get();
+            $laporan = $laporan->whereIn('status', ['diterima', 'ditolak']);
         } else {
-            // Murid hanya bisa melihat laporan yang mereka ajukan
-            $laporan = Laporan::with('user')
-                ->where('user_id', Auth::id()) // Hanya laporan yang diajukan oleh murid yang sedang login
-                ->get();
+            $laporan = $laporan->where('user_id', Auth::id());
         }
+
+        // 🔍 Filter search gabungan:
+        if ($request->filled('search')) {
+            $search = $request->input('search');
+
+            $laporan = $laporan->where(function ($q) use ($search) {
+                // cari nama di tabel laporan
+                $q->where('nama', 'like', '%' . $search . '%')
+                    // cari NIS di relasi user
+                    ->orWhereHas('user', function ($uq) use ($search) {
+                        $uq->where('NIS', 'like', '%' . $search . '%');
+                    });
+            });
+        }
+
+        // 🗓 Filter tanggal
+        if ($request->filled('filter_date')) {
+            $filter = $request->input('filter_date');
+
+            if ($filter == 'today') {
+                $laporan = $laporan->whereDate('created_at', Carbon::today());
+            } elseif ($filter == 'yesterday') {
+                $laporan = $laporan->whereDate('created_at', Carbon::yesterday());
+            } elseif ($filter == 'last_7_days') {
+                $laporan = $laporan->whereDate('created_at', '>=', Carbon::now()->subDays(7));
+            }
+        }
+
+        $laporan = $laporan->latest()->paginate(10);
 
         return view('dashboard.draft', compact('laporan'));
     }
@@ -77,8 +97,22 @@ class LaporanController extends Controller
     public function approve($id)
     {
         Laporan::where('id_laporan', $id)->update(['status' => 'diterima']);
-        return back()->with('success', 'Laporan diterima.');
+
+        $laporan = Laporan::where('id_laporan', $id)->firstOrFail();
+
+        $existingChat = Chat::where('id_laporan', $id)->first();
+
+        if (!$existingChat) {
+            Chat::create([
+                'guru_id' => Auth::id(),
+                'murid_id' => $laporan->user_id,
+                'id_laporan' => $id,
+            ]);
+        }
+
+        return back()->with('success', 'Laporan diterima dan chat telah dibuat.');
     }
+
 
     public function reject($id)
     {

@@ -14,7 +14,11 @@ class Kernel extends HttpKernel
     /**
      * Middleware groups untuk route "web" dan "api".
      */
-    protected $middlewareGroups = [];
+    protected $middlewareGroups = [
+        'web' => [
+            \App\Http\Middleware\ShareChatList::class,
+        ],
+    ];
 
     /**
      * Route middleware (bisa dipanggil per-route).

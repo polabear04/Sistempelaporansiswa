@@ -1,0 +1,32 @@
+   .chat-container {
+            display: flex;
+            flex-direction: row;
+            height: 100vh;
+        }
+
+        .sidebar {
+            height: 100vh;
+        }
+
+        .chat-content {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+            background-color: #fff;
+        }
+
+        .chat-box {
+            border: 1px solid #ccc;
+            padding: 10px;
+            height: 350px;
+            overflow-y: auto;
+            background: #f9f9f9;
+        }
+
+        .chat-message {
+            margin-bottom: 15px;
+        }
+
+        .chat-message.right {
+            text-align: right;
+        }

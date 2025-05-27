@@ -24,7 +24,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach ($laporan as $lapor)
+                                    @forelse ($laporan as $lapor)
                                         <tr>
                                             <td>{{ $lapor->id_laporan }}</td>
                                             <td>{{ $lapor->nama }}</td>
@@ -117,7 +117,11 @@
 
                                             </td>
                                         </tr>
-                                    @endforeach
+                                    @empty
+                                        <tr>
+                                            <td colspan="10" class="text-center">Tidak ada laporan yang di ajukan</td>
+                                        </tr>
+                                    @endforelse
 
                                 </tbody>
                             </table>

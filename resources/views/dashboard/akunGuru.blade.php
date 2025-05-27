@@ -87,13 +87,9 @@
                                         </form>
 
                                     </div>
-
-                                    <!-- Footer -->
-
                                 </div>
                             </div>
                         </div>
-
 
                         <!-- Table -->
                         <div class="table-responsive">
@@ -116,7 +112,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach ($users as $user)
+                                    @forelse ($users as $user)
                                         <tr>
                                             <td>{{ $user->NIS }}</td>
                                             <td>{{ $user->nama }}</td>
@@ -133,7 +129,11 @@
                                                 </form>
                                             </td>
                                         </tr>
-                                    @endforeach
+                                    @empty
+                                        <tr>
+                                            <td colspan="10" class="text-center">Tidak ada akun yang terdaftar</td>
+                                        </tr>
+                                    @endforelse
                                 </tbody>
                             </table>
                         </div>

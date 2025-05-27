@@ -1,7 +1,7 @@
 <?php
 
 use App\Http\Controllers\LaporanController;
-use App\Http\Controllers\AdminController;
+use App\Http\Controllers\ChatController;
 use App\Http\Controllers\UsersController;
 use App\Http\Controllers\MainController;
 use Illuminate\Support\Facades\Route;
@@ -31,7 +31,8 @@ Route::middleware(['auth', 'checkrole:guru'])->group(function () {
 });
 Route::middleware(['auth'])->group(function () {
 
-    Route::get('/index', [UsersController::class, 'index']);
+    Route::get('/index', [UsersController::class, 'index'])->name('dashboard');
+
 
     Route::get('/pelaporan', [UsersController::class, 'pelaporan']);
 
@@ -43,4 +44,12 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/draft', [LaporanController::class, 'showDraft'])->name('draft')->middleware('auth');
     Route::post('/draft/store', [LaporanController::class, 'store'])->name('laporan.store');
     Route::delete('/draft/{id}', [LaporanController::class, 'destroy'])->name('laporan.destroy');
+
+    Route::get('/chats', [ChatController::class, 'index'])->name('chats.index');
+
+    // Detail chat & pesan
+    Route::get('/chats/{chat}', [ChatController::class, 'show'])->name('chats.show');
+
+    // Kirim pesan baru di chat
+    Route::post('/chats/{chat}/message', [ChatController::class, 'sendMessage'])->name('chats.message.send');
 });

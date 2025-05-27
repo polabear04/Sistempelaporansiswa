@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Hash;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use Carbon\Carbon;
 
 class UsersController extends Controller
 {
@@ -29,7 +30,7 @@ class UsersController extends Controller
             $totalLaporan = Laporan::count();
         } elseif ($role == 'guru') {
             $laporanDiajukan = Laporan::where('status', 'pending')->count(); // Semua laporan yang diajukan
-            $laporanDisetujui = Laporan::where('status', 'diterima')->count(); // Status disetujui
+            $laporanDisetujui = Laporan::whereIn('status', ['diterima', 'ditolak'])->count(); // Status disetujui
         } elseif ($role == 'murid') {
             $laporanSaya = Laporan::where('user_id', Auth::id())->count(); // Laporan milik murid
             $laporanSayaDisetujui = Laporan::where('user_id', Auth::id())
@@ -62,11 +63,30 @@ class UsersController extends Controller
     {
         view()->share('totalUsers', \App\Models\User::count());
     }
-    public function allAkun()
+    public function allAkun(Request $request)
     {
-        $users = User::all();
+        $query = User::query();
+
+        // Search by nama / NIS / role
+        if ($request->filled('search')) {
+            $search = $request->input('search');
+            $query->where(function ($q) use ($search) {
+                $q->where('nama', 'like', '%' . $search . '%')
+                    ->orWhere('NIS', 'like', '%' . $search . '%');
+            });
+        }
+
+        // Filter berdasarkan role (admin/guru/murid)
+        $filterRole = $request->input('filter_role');
+        if ($filterRole != '') {
+            $query->where('role', $filterRole);
+        }
+        // Ambil hasil
+        $users = $query->latest()->paginate(10);
+
         return view('dashboard.akun', compact('users'));
     }
+
     public function destroy($id)
     {
         $user = User::findOrFail($id);

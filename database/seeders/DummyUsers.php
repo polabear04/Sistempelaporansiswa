@@ -25,6 +25,16 @@ class DummyUsers extends Seeder
                 'foto_profile' => 'dashboard/images/profile.png'
             ],
             [
+                'NIS' => '5555',
+                'nama' => 'wahyu 2',
+                'posisi' => 'murid',
+                'alamat' => 'depok',
+                'email' => 'wahyu2@gmail.com',
+                'password' => bcrypt('12345'),
+                'role' => 'murid',
+                'foto_profile' => 'dashboard/images/profile.png'
+            ],
+            [
                 'NIS' => '4444',
                 'nama' => 'ezy',
                 'posisi' => 'guru bk',
