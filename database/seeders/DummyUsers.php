@@ -17,7 +17,6 @@ class DummyUsers extends Seeder
             [
                 'NIS' => '3333',
                 'nama' => 'wahyu',
-                'posisi' => 'kepsek',
                 'alamat' => 'depok',
                 'email' => 'wahyu@gmail.com',
                 'password' => bcrypt('12345'),
@@ -27,7 +26,6 @@ class DummyUsers extends Seeder
             [
                 'NIS' => '5555',
                 'nama' => 'wahyu 2',
-                'posisi' => 'murid',
                 'alamat' => 'depok',
                 'email' => 'wahyu2@gmail.com',
                 'password' => bcrypt('12345'),
@@ -37,7 +35,6 @@ class DummyUsers extends Seeder
             [
                 'NIS' => '4444',
                 'nama' => 'ezy',
-                'posisi' => 'guru bk',
                 'alamat' => 'depok',
                 'email' => 'ezy@gmail.com',
                 'password' => bcrypt('12345'),

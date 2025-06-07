@@ -1,5 +1,11 @@
 <?php
 
+use App\Http\Controllers\PDFController;
+use Illuminate\Support\Facades\Mail;
+use App\Http\Controllers\NewPasswordController;
+use Illuminate\Support\Facades\Password;
+use Illuminate\Foundation\Auth\EmailVerificationRequest;
+use Illuminate\Http\Request;
 use App\Http\Controllers\LaporanController;
 use App\Http\Controllers\ChatController;
 use App\Http\Controllers\UsersController;
@@ -17,6 +23,7 @@ Route::middleware(['auth', 'checkrole:admin'])->group(function () {
     Route::get('/akunMurid', [UsersController::class, 'akunMurid'])->name('akunMurid');
     Route::delete('/akunMurid/{id}', [UsersController::class, 'destroy'])->name('akun.deleteMurid');
 
+    Route::put('/akun/{user}', [UsersController::class, 'update'])->name('akun.update');
     Route::get('/akun', [UsersController::class, 'allAkun'])->name('akun');
     Route::post('/addAkun', [UsersController::class, 'addAkun'])->name('addAkun');
     Route::delete('/akun/{id}', [UsersController::class, 'destroy'])->name('akun.delete');
@@ -52,4 +59,46 @@ Route::middleware(['auth'])->group(function () {
 
     // Kirim pesan baru di chat
     Route::post('/chats/{chat}/message', [ChatController::class, 'sendMessage'])->name('chats.message.send');
+    // Kirim ulang link verifikasi email
+    Route::post('/email/verification-notification', function (Request $request) {
+        $request->user()->sendEmailVerificationNotification();
+
+        return back()->with('message', 'Link verifikasi telah dikirim!');
+    })->middleware(['auth', 'throttle:6,1'])->name('verification.send');
+
+    // Verifikasi via link email
+    Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $request) {
+        $request->fulfill();
+
+        return redirect('/profile');
+    })->middleware(['auth', 'signed'])->name('verification.verify');
+    Route::get('/email/verify', function () {
+        return redirect('/profile');
+    })->middleware('auth')->name('verification.notice');
+
+
+    Route::get('/lupa-password', function () {
+        return view('lupaPassword');
+    })->middleware('guest')->name('password.request');
+
+    Route::post('/lupa-password', function (Illuminate\Http\Request $request) {
+        $request->validate(['email' => 'required|email']);
+
+        $status = Password::sendResetLink(
+            $request->only('email')
+        );
+
+        return $status === Password::RESET_LINK_SENT
+            ? back()->with('status', __($status))
+            : back()->withErrors(['email' => __($status)]);
+    })->middleware('guest')->name('password.email');
+    Route::get('/reset-password/{token}', [NewPasswordController::class, 'create'])
+        ->middleware('guest')
+        ->name('password.reset');
+
+    Route::post('/reset-password', [NewPasswordController::class, 'store'])
+        ->middleware('guest')
+        ->name('password.update');
+
+    Route::get('/laporan/{id}/cetak', [PDFController::class, 'cetakPDF'])->name('laporan.cetak');
 });

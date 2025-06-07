@@ -87,6 +87,32 @@ class UsersController extends Controller
         return view('dashboard.akun', compact('users'));
     }
 
+    public function update(Request $request, User $user)
+    {
+        $request->validate([
+            'NIS' => 'required|string|max:255',
+            'nama' => 'required|string|max:255',
+            'email' => 'required|email',
+            'role' => 'required|in:admin,guru,siswa',
+            'alamat' => 'required|string',
+            'password' => 'nullable|string|min:6',
+        ]);
+
+        $user->NIS = $request->NIS;
+        $user->nama = $request->nama;
+        $user->email = $request->email;
+        $user->role = $request->role;
+        $user->alamat = $request->alamat;
+
+        if ($request->filled('password')) {
+            $user->password = bcrypt($request->password);
+        }
+
+        $user->save();
+
+        return redirect()->back()->with('success', 'Data user berhasil diperbarui.');
+    }
+
     public function destroy($id)
     {
         $user = User::findOrFail($id);
@@ -100,7 +126,6 @@ class UsersController extends Controller
             $user = new User();
             $user->NIS = $request->input('NIS');
             $user->nama = $request->input('nama');
-            $user->posisi = $request->input('posisi');
             $user->alamat = $request->input('alamat');
             $user->email = $request->input('email');
             $user->password = Hash::make($request->input('password'));
@@ -161,7 +186,6 @@ class UsersController extends Controller
     {
         $request->validate([
             'nama' => 'required|string|max:255',
-            'posisi' => 'required|string|max:255',
             'email' => 'required|email|max:255',
             'alamat' => 'required|string|max:255',
         ]);
@@ -174,11 +198,6 @@ class UsersController extends Controller
             if ($user->nama !== $request->nama) {
                 $user->nama = $request->nama;
                 $changes[] = 'Nama';
-            }
-
-            if ($user->posisi !== $request->posisi) {
-                $user->posisi = $request->posisi;
-                $changes[] = 'Status/Posisi';
             }
 
             if ($user->email !== $request->email) {

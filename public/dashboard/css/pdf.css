@@ -1,0 +1,61 @@
+   body {
+            font-family: 'Times New Roman', Times, serif;
+            font-size: 14px;
+            margin: 40px;
+        }
+
+        .kop-surat {
+            text-align: center;
+            margin-bottom: 10px;
+        }
+
+        .logo-kop {
+            width: 80px;
+            height: auto;
+            margin-bottom: 5px;
+        }
+
+        .judul-instansi {
+            font-size: 14px;
+            line-height: 1.4;
+        }
+
+        .garis-bawah {
+            border: 1px solid #000;
+            margin: 10px 0 20px 0;
+        }
+
+        .content p {
+            margin: 8px 0;
+        }
+
+        .lampiran {
+            margin-top: 20px;
+        }
+
+        .lampiran img {
+            max-width: 100%;
+            max-height: 400px;
+            height: auto;
+            border: 1px solid #000;
+        }
+       .tabel-laporan {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    font-size: 14px;
+}
+
+.tabel-laporan td {
+    vertical-align: top;
+    padding: 4px 8px;
+}
+
+.tabel-laporan td:first-child {
+    width: 180px; /* kolom label */
+}
+
+.tabel-laporan .titik-dua {
+    width: 20px;
+    text-align: center;
+}

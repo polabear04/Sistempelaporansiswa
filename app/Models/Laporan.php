@@ -11,7 +11,7 @@ class Laporan extends Model
     public $incrementing = false;
     protected $keyType = 'string';
 
-    protected $fillable = ['id_laporan', 'nama', 'deskripsi', 'tanggal', 'status', 'user_id'];
+    protected $fillable = ['id_laporan', 'nama', 'deskripsi', 'tanggal', 'status', 'foto', 'user_id'];
 
     public function user()
     {

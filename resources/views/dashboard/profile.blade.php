@@ -43,8 +43,12 @@
                             </div>
                         @endif
 
+
+
                         <form action="{{ route('profile.update') }}" method="POST">
                             @csrf
+
+                            <!-- Nama -->
                             <div class="row mb-3">
                                 <label class="col-sm-3 col-form-label">Nama lengkap</label>
                                 <div class="col-sm-9">
@@ -53,22 +57,32 @@
                                 </div>
                             </div>
 
-                            <div class="row mb-3">
-                                <label class="col-sm-3 col-form-label">Status</label>
-                                <div class="col-sm-9">
-                                    <input type="text" class="form-control" name="posisi"
-                                        value="{{ Auth::user()->posisi }}">
-                                </div>
-                            </div>
-
+                            <!-- Email -->
                             <div class="row mb-3">
                                 <label class="col-sm-3 col-form-label">Email</label>
                                 <div class="col-sm-9">
                                     <input type="email" class="form-control" name="email"
                                         value="{{ Auth::user()->email }}">
+
+                                    @if (!Auth::user()->hasVerifiedEmail())
+                                        <div class="mt-2">
+                                            <small class="text-danger">Email belum diverifikasi.</small><br>
+
+                                            <!-- Tombol kirim ulang verifikasi -->
+                                            <button type="submit" formaction="{{ route('verification.send') }}"
+                                                class="btn btn-sm btn-warning mt-1">
+                                                Kirim ulang verifikasi
+                                            </button>
+                                        </div>
+                                    @else
+                                        <div class="mt-2">
+                                            <small class="text-success">Email sudah diverifikasi.</small>
+                                        </div>
+                                    @endif
                                 </div>
                             </div>
 
+                            <!-- Alamat -->
                             <div class="row mb-3">
                                 <label class="col-sm-3 col-form-label">Alamat</label>
                                 <div class="col-sm-9">
@@ -77,10 +91,13 @@
                                 </div>
                             </div>
 
+                            <!-- Tombol Simpan -->
                             <div class="d-flex justify-content-end">
                                 <button type="submit" class="btn btn-primary">Simpan</button>
                             </div>
                         </form>
+
+
 
                     </div>
                 </div>

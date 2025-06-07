@@ -158,7 +158,6 @@
                                     <tr>
                                         <th>NIS/NIP</th>
                                         <th>Nama</th>
-                                        <th>Posisi</th>
                                         <th>Alamat</th>
                                         <th>Email</th>
                                         <th>Password</th>
@@ -171,28 +170,124 @@
                                         <tr>
                                             <td>{{ $user->NIS }}</td>
                                             <td>{{ $user->nama }}</td>
-                                            <td>{{ $user->posisi }}</td>
                                             <td>{{ $user->alamat }}</td>
                                             <td>{{ $user->email }}</td>
                                             <td>********</td>
                                             <td class="fw-bold">{{ $user->role }}</td>
                                             <td>
+                                                <!-- Tombol Edit -->
+                                                <button type="button" class="btn btn-warning btn-sm"
+                                                    data-toggle="modal"
+                                                    data-target="#editUserModal{{ $user->id }}">
+                                                    Edit
+                                                </button>
+
+                                                <!-- Form Hapus -->
                                                 <form action="{{ route('akun.delete', $user->id) }}" method="POST"
-                                                    onsubmit="return confirm('Yakin ingin menghapus laporan ini?');">
+                                                    onsubmit="return confirm('Yakin ingin menghapus akun ini?');"
+                                                    class="d-inline">
                                                     @csrf
                                                     @method('DELETE')
                                                     <button class="btn btn-danger btn-sm">Hapus</button>
                                                 </form>
                                             </td>
                                         </tr>
+
+                                        <!-- Modal Edit User (DI LUAR <tr>) -->
+                                        <div class="modal fade" id="editUserModal{{ $user->id }}" tabindex="-1"
+                                            role="dialog" aria-labelledby="editUserModalLabel{{ $user->id }}"
+                                            aria-hidden="true">
+                                            <div class="modal-dialog" role="document">
+                                                <form action="{{ route('akun.update', $user->id) }}" method="POST">
+                                                    @csrf
+                                                    @method('PUT')
+
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title"
+                                                                id="editUserModalLabel{{ $user->id }}">Edit Data
+                                                                User</h5>
+                                                            <button type="button" class="close"
+                                                                data-dismiss="modal" aria-label="Close">
+                                                                <span aria-hidden="true">&times;</span>
+                                                            </button>
+                                                        </div>
+                                                        <div class="modal-body">
+
+
+                                                            <!-- Form Input -->
+                                                            <div class="mb-3">
+                                                                <label for="nis{{ $user->id }}"
+                                                                    class="form-label">NIS</label>
+                                                                <input type="text" name="NIS"
+                                                                    class="form-control" id="nis{{ $user->id }}"
+                                                                    value="{{ $user->NIS }}" required>
+                                                            </div>
+                                                            <div class="mb-3">
+                                                                <label for="nama{{ $user->id }}"
+                                                                    class="form-label">Nama</label>
+                                                                <input type="text" name="nama"
+                                                                    class="form-control" id="nama{{ $user->id }}"
+                                                                    value="{{ $user->nama }}" required>
+                                                            </div>
+                                                            <div class="mb-3">
+                                                                <label for="email{{ $user->id }}"
+                                                                    class="form-label">Email</label>
+                                                                <input type="email" name="email"
+                                                                    class="form-control"
+                                                                    id="email{{ $user->id }}"
+                                                                    value="{{ $user->email }}" required>
+                                                            </div>
+                                                            <div class="mb-3">
+                                                                <label for="password{{ $user->id }}"
+                                                                    class="form-label">Password (opsional)</label>
+                                                                <input type="password" name="password"
+                                                                    class="form-control"
+                                                                    id="password{{ $user->id }}">
+                                                                <small class="text-muted">Kosongkan jika tidak ingin
+                                                                    mengganti password</small>
+                                                            </div>
+                                                            <div class="mb-3">
+                                                                <label for="role{{ $user->id }}"
+                                                                    class="form-label">Role</label>
+                                                                <select name="role" id="role{{ $user->id }}"
+                                                                    class="form-control" required>
+                                                                    <option value="admin"
+                                                                        {{ $user->role == 'admin' ? 'selected' : '' }}>
+                                                                        Admin</option>
+                                                                    <option value="guru"
+                                                                        {{ $user->role == 'guru' ? 'selected' : '' }}>
+                                                                        Guru</option>
+                                                                    <option value="murid"
+                                                                        {{ $user->role == 'murid' ? 'selected' : '' }}>
+                                                                        Murid</option>
+                                                                </select>
+                                                            </div>
+                                                            <div class="mb-3">
+                                                                <label for="alamat{{ $user->id }}"
+                                                                    class="form-label">Alamat</label>
+                                                                <textarea name="alamat" class="form-control" id="alamat{{ $user->id }}" rows="3" required>{{ $user->alamat }}</textarea>
+                                                            </div>
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-secondary"
+                                                                data-dismiss="modal">Batal</button>
+                                                            <button type="submit" class="btn btn-primary">Simpan
+                                                                Perubahan</button>
+                                                        </div>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
                                     @empty
                                         <tr>
-                                            <td colspan="10" class="text-center">Tidak ada akun yang terdaftar
-                                            </td>
+                                            <td colspan="10" class="text-center">Tidak ada akun yang terdaftar</td>
                                         </tr>
                                     @endforelse
                                 </tbody>
+
                             </table>
+
                         </div>
 
                     </div>

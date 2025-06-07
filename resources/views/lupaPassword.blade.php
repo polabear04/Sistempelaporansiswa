@@ -27,8 +27,8 @@
             <div class="col-md-6 right-box">
                 <div class="row align-items-center">
                     <div class="header-text mb-4">
-                        <h2>Selamat datang di</h2>
-                        <p>Pelaporan Siswa</p>
+                        <h2>Reset password anda</h2>
+
                     </div>
                     @if ($errors->any())
                         <div class="alert alert-danger">
@@ -45,31 +45,38 @@
                         </div>
                     @endif
 
-                    <form action="" method="POST">
+                    @if (session('status'))
+                        <div class="alert alert-success">
+                            {{ session('status') }}
+                        </div>
+                    @endif
+
+                    <form action="{{ route('password.email') }}" method="POST">
                         @csrf
                         <div class="input-group mb-3">
-                            <input type="text" name="NIS" class="form-control form-control-lg bg-light fs-6"
-                                placeholder="NIS/NIP" value="{{ old('NIS') }}">
+                            <input type="email" name="email" class="form-control form-control-lg bg-light fs-6"
+                                placeholder="Masukkan email terverifikasi" value="{{ old('email') }}" required
+                                autofocus>
                         </div>
-                        <div class="input-group mb-1">
-                            <input type="password" name="password" class="form-control form-control-lg bg-light fs-6"
-                                placeholder="Password">
-                        </div>
-                        <div class="input-group mb-5 d-flex justify-content-between">
-                            <div class="form-check">
-                                <input type="checkbox" class="form-check-input" id="formCheck" name="remember">
-                                <label for="formCheck" class="form-check-label text-secondary">
-                                    <small>Remember Me</small>
-                                </label>
+
+                        @error('email')
+                            <div class="text-danger mb-2">
+                                {{ $message }}
                             </div>
-                            <div class="forgot">
-                                <small><a href="{{ URL::to('/lupa-password') }}">Lupa Password?</a></small>
-                            </div>
-                        </div>
+                        @enderror
+
                         <div class="input-group mb-3">
-                            <button type="submit" class="btn btn-lg btn-primary w-100 fs-6">Login</button>
+                            <button type="submit" class="btn btn-lg btn-primary w-100 fs-6">Kirim Link Reset
+                                Password</button>
+                        </div>
+
+                        <div class="input-group mb-5 d-flex justify-content-between">
+                            <div class="forgot">
+                                <small><a href="{{ route('login') }}">Kembali ke halaman login</a></small>
+                            </div>
                         </div>
                     </form>
+
                 </div>
             </div>
 

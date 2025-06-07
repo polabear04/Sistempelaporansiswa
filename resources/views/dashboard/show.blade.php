@@ -77,30 +77,6 @@
                                 <span class="menu-title">Kembali ke chat room</span>
                             </a>
                         </li>
-                        <li class="nav-item ">
-                            <a class="nav-link no-auto-active" aria-expanded="false" href="{{ url('/chats') }}">
-                                <i class="icon-grid menu-icon"></i>
-                                <span class="menu-title">List chat</span>
-                            </a>
-                        </li>
-                        {{-- @if ($chats->isNotEmpty())
-                            @foreach ($chats as $chat)
-                                <li class="nav-item ms-3">
-                                    <a class="nav-link no-auto-active small"
-                                        href="{{ route('chats.show', $chat->id) }}">
-                                        @if (auth()->user()->role == 'guru')
-                                            Murid: {{ $chat->murid->nama }}
-                                        @else
-                                            Guru: {{ $chat->guru->nama }}
-                                        @endif
-                                    </a>
-                                </li>
-                            @endforeach
-                        @else
-                            <li class="nav-item ms-3">
-                                <span class="nav-link text-muted small">Tidak ada chat</span>
-                            </li>
-                        @endif --}}
                     @endif
 
 

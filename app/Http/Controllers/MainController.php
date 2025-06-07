@@ -35,4 +35,8 @@ class MainController extends Controller
             return redirect('')->withErrors('NIS/NIP dan password yang dimasukkan tidak sesuai')->withInput();
         }
     }
+    public function lupaPassword()
+    {
+        return view('lupaPassword');
+    }
 }

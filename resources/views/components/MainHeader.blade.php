@@ -103,7 +103,7 @@
                         </li>
                     @endif
 
-                    @if (in_array(Auth::user()->role, ['admin', 'guru', 'murid']))
+                    @if (in_array(Auth::user()->role, ['guru', 'murid']))
                         <li class="nav-item">
                             <a class="nav-link" data-toggle="collapse" href="#form-elements" aria-expanded="false"
                                 aria-controls="form-elements">
@@ -147,9 +147,11 @@
                         </a>
                         <div class="collapse" id="auth">
                             <ul class="nav flex-column sub-menu">
-                                <li class="nav-item"> <a class="nav-link"
-                                        href="{{ URL::to('profile') }}">Profile</a>
-                                </li>
+                                @if (in_array(Auth::user()->role, ['guru', 'murid']))
+                                    <li class="nav-item"> <a class="nav-link"
+                                            href="{{ URL::to('profile') }}">Profile</a>
+                                    </li>
+                                @endif
                                 <li class="nav-item">
                                     <a class="nav-link" href="#"
                                         onclick="event.preventDefault(); document.getElementById('logout-form').submit();">

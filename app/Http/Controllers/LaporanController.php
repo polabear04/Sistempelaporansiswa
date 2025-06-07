@@ -8,6 +8,7 @@ use App\Models\Chat;
 use App\Models\Laporan;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 
 class LaporanController extends Controller
 {
@@ -59,6 +60,13 @@ class LaporanController extends Controller
 
     public function store(Request $request)
     {
+        $request->validate([
+            'nama' => 'required|string|max:255',
+            'deskripsi' => 'required|string',
+            'tanggal' => 'required|date',
+            'foto' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048', // validasi gambar
+        ]);
+
         $last = Laporan::orderBy('id_laporan', 'desc')->first();
 
         if ($last) {
@@ -70,6 +78,9 @@ class LaporanController extends Controller
 
         $newId = 'LP-' . str_pad($newNumber, 3, '0', STR_PAD_LEFT);
 
+        // Simpan gambar
+        $fotoPath = $request->file('foto')->store('bukti', 'public'); // simpan ke storage/app/public/bukti
+
         Laporan::create([
             'id_laporan' => $newId,
             'nama'       => $request->nama,
@@ -77,6 +88,7 @@ class LaporanController extends Controller
             'tanggal'    => $request->tanggal,
             'status'     => $request->status ?? 'pending',
             'user_id'    => Auth::id(),
+            'foto'       => $fotoPath, // simpan path ke database
         ]);
 
         return redirect()->route('draft')->with('success', 'Laporan berhasil ditambahkan!');

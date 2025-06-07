@@ -10,7 +10,7 @@
                     <div class="card-body">
                         <p class="card-title mb-4">Tambah Laporan</p>
                         <div class="table-responsive">
-                            <form action="{{ route('laporan.store') }}" method="POST">
+                            <form action="{{ route('laporan.store') }}" method="POST" enctype="multipart/form-data">
                                 @csrf
 
                                 <input type="hidden" name="status" value="pending">
@@ -30,8 +30,15 @@
                                     <input type="date" name="tanggal" class="form-control" id="tanggal" required>
                                 </div>
 
+                                <div class="form-group">
+                                    <label for="foto">Foto Bukti Kejadian</label>
+                                    <input type="file" name="foto" class="form-control-file" id="foto"
+                                        accept="image/*" required>
+                                </div>
+
                                 <button type="submit" class="btn btn-primary">Submit</button>
                             </form>
+
 
 
                         </div>

@@ -16,7 +16,6 @@ return new class extends Migration
             $table->id();
             $table->integer('NIS')->unique();
             $table->string('nama');
-            $table->string('posisi');
             $table->string('alamat');
             $table->string('email')->unique();
             $table->string('password');
