@@ -49,7 +49,7 @@
                             <div class="card card-dark-blue">
                                 <div class="card-body">
                                     <p class="mb-4">Akun terverifikasi</p>
-                                    <p class="fs-30 mb-2">0</p>
+                                    <p class="fs-30 mb-2">{{ $totalVerifiedUsers }}</p>
                                 </div>
                             </div>
                         </div>

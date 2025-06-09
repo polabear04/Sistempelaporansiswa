@@ -57,7 +57,8 @@
                                                             <!-- Header -->
                                                             <div class="modal-header">
                                                                 <h5 class="modal-title"
-                                                                    id="modalLabel{{ $lapor->id_laporan }}">Laporan
+                                                                    id="modalLabel{{ $lapor->id_laporan }}">
+                                                                    Laporan
                                                                     lengkap</h5>
                                                                 <button type="button" class="close"
                                                                     data-dismiss="modal" aria-label="Close">
@@ -93,12 +94,65 @@
                                                                             value="{{ \Carbon\Carbon::parse($lapor->tanggal)->format('d M Y') }}"
                                                                             disabled>
                                                                     </div>
+                                                                    <div class="form-group">
+                                                                        <label
+                                                                            for="foto{{ $lapor->id_laporan }}">Lampiran</label><br>
+                                                                        @if ($lapor->foto)
+                                                                            <!-- Gambar preview kecil -->
+                                                                            <img src="{{ asset('storage/' . $lapor->foto) }}"
+                                                                                alt="Foto Bukti" class="img-thumbnail"
+                                                                                style="max-width: 150px; cursor: pointer;"
+                                                                                data-toggle="modal"
+                                                                                data-target="#modalFoto{{ $lapor->id_laporan }}">
+
+                                                                            <!-- Modal untuk gambar besar -->
+                                                                            <div class="modal fade"
+                                                                                id="modalFoto{{ $lapor->id_laporan }}"
+                                                                                tabindex="-1" role="dialog"
+                                                                                aria-labelledby="modalLabel{{ $lapor->id_laporan }}"
+                                                                                aria-hidden="true">
+                                                                                <div class="modal-dialog modal-dialog-centered modal-lg"
+                                                                                    role="document">
+                                                                                    <!-- modal-lg untuk lebar -->
+                                                                                    <div class="modal-content">
+                                                                                        <div class="modal-header">
+                                                                                            <h5 class="modal-title"
+                                                                                                id="modalLabel{{ $lapor->id_laporan }}">
+                                                                                                Foto Bukti
+                                                                                                Kejadian</h5>
+                                                                                            <button type="button"
+                                                                                                class="close"
+                                                                                                data-dismiss="modal"
+                                                                                                aria-label="Tutup">
+                                                                                                <span
+                                                                                                    aria-hidden="true">&times;</span>
+                                                                                            </button>
+                                                                                        </div>
+                                                                                        <div
+                                                                                            class="modal-body text-center">
+                                                                                            <img src="{{ asset('storage/' . $lapor->foto) }}"
+                                                                                                alt="Foto Bukti"
+                                                                                                class="img-fluid rounded"
+                                                                                                style="max-height: 70vh; object-fit: contain;">
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        @else
+                                                                            <p class="text-muted">Tidak ada
+                                                                                lampiran</p>
+                                                                        @endif
+                                                                    </div>
+
+
+
                                                                 </form>
                                                             </div>
 
                                                         </div>
                                                     </div>
                                                 </div>
+
                                                 @if ($lapor->status === 'pending')
                                                     <form action="{{ route('laporan.approve', $lapor->id_laporan) }}"
                                                         method="POST" style="display:inline;">
@@ -119,7 +173,8 @@
                                         </tr>
                                     @empty
                                         <tr>
-                                            <td colspan="10" class="text-center">Tidak ada laporan yang di ajukan</td>
+                                            <td colspan="10" class="text-center">Tidak ada laporan yang di ajukan
+                                            </td>
                                         </tr>
                                     @endforelse
 

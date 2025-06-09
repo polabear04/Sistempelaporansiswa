@@ -62,7 +62,8 @@
                                 <label class="col-sm-3 col-form-label">Email</label>
                                 <div class="col-sm-9">
                                     <input type="email" class="form-control" name="email"
-                                        value="{{ Auth::user()->email }}">
+                                        value="{{ Auth::user()->email }}"
+                                        @if (Auth::user()->hasVerifiedEmail()) disabled @endif>
 
                                     @if (!Auth::user()->hasVerifiedEmail())
                                         <div class="mt-2">
@@ -81,6 +82,7 @@
                                     @endif
                                 </div>
                             </div>
+
 
                             <!-- Alamat -->
                             <div class="row mb-3">

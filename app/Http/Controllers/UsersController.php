@@ -19,7 +19,7 @@ class UsersController extends Controller
 
         // Data default
         $totalUsers = null;
-        $totalLaporan = null;
+        $totalVerifiedUsers = null;
         $laporanDiajukan = null;
         $laporanDisetujui = null;
         $laporanSaya = null;
@@ -27,7 +27,7 @@ class UsersController extends Controller
 
         if ($role == 'admin') {
             $totalUsers = User::count();
-            $totalLaporan = Laporan::count();
+            $totalVerifiedUsers = User::whereNotNull('email_verified_at')->count();
         } elseif ($role == 'guru') {
             $laporanDiajukan = Laporan::where('status', 'pending')->count(); // Semua laporan yang diajukan
             $laporanDisetujui = Laporan::whereIn('status', ['diterima', 'ditolak'])->count(); // Status disetujui
@@ -39,7 +39,7 @@ class UsersController extends Controller
 
         return view('dashboard.index', compact(
             'totalUsers',
-            'totalLaporan',
+            'totalVerifiedUsers',
             'laporanDiajukan',
             'laporanDisetujui',
             'laporanSaya',

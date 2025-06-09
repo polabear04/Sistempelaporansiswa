@@ -49,7 +49,7 @@
                         <div class="dropdown-menu dropdown-menu-right navbar-dropdown"
                             aria-labelledby="profileDropdown">
                             <a class="dropdown-item" href="{{ URL::to('profile') }}">
-                                <i class="ti-settings text-primary"></i>
+                                <i class="icon-head text-primary"></i>
                                 Profile
                             </a>
                             <a class="dropdown-item" href="#"

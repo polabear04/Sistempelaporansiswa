@@ -162,6 +162,7 @@
                                         <th>Email</th>
                                         <th>Password</th>
                                         <th>Role</th>
+                                        <th>Verifikasi</th>
                                         <th>Action</th>
                                     </tr>
                                 </thead>
@@ -174,6 +175,14 @@
                                             <td>{{ $user->email }}</td>
                                             <td>********</td>
                                             <td class="fw-bold">{{ $user->role }}</td>
+                                            <td>
+                                                @if ($user->email_verified_at)
+                                                    <span class="badge bg-success">Terverifikasi</span>
+                                                @else
+                                                    <span class="badge bg-danger">Belum Terverifikasi</span>
+                                                @endif
+                                            </td>
+
                                             <td>
                                                 <!-- Tombol Edit -->
                                                 <button type="button" class="btn btn-warning btn-sm"

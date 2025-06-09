@@ -59,11 +59,7 @@
                                 autofocus>
                         </div>
 
-                        @error('email')
-                            <div class="text-danger mb-2">
-                                {{ $message }}
-                            </div>
-                        @enderror
+
 
                         <div class="input-group mb-3">
                             <button type="submit" class="btn btn-lg btn-primary w-100 fs-6">Kirim Link Reset

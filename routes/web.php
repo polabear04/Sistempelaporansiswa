@@ -15,6 +15,29 @@ use Illuminate\Support\Facades\Route;
 Route::middleware(['guest'])->group(function () {
     Route::get('/', [MainController::class, 'index'])->name('login');
     Route::post('/', [MainController::class, 'login']);
+
+    Route::get('/lupa-password', function () {
+        return view('lupaPassword');
+    })->middleware('guest')->name('password.request');
+
+    Route::post('/lupa-password', function (Illuminate\Http\Request $request) {
+        $request->validate(['email' => 'required|email']);
+
+        $status = Password::sendResetLink(
+            $request->only('email')
+        );
+
+        return $status === Password::RESET_LINK_SENT
+            ? back()->with('status', __($status))
+            : back()->withErrors(['email' => __($status)]);
+    })->middleware('guest')->name('password.email');
+    Route::get('/reset-password/{token}', [NewPasswordController::class, 'create'])
+        ->middleware('guest')
+        ->name('password.reset');
+
+    Route::post('/reset-password', [NewPasswordController::class, 'store'])
+        ->middleware('guest')
+        ->name('password.update');
 });
 Route::middleware(['auth', 'checkrole:admin'])->group(function () {
     Route::get('/akunGuru', [UsersController::class, 'akunGuru'])->name('akunGuru');
@@ -76,29 +99,6 @@ Route::middleware(['auth'])->group(function () {
         return redirect('/profile');
     })->middleware('auth')->name('verification.notice');
 
-
-    Route::get('/lupa-password', function () {
-        return view('lupaPassword');
-    })->middleware('guest')->name('password.request');
-
-    Route::post('/lupa-password', function (Illuminate\Http\Request $request) {
-        $request->validate(['email' => 'required|email']);
-
-        $status = Password::sendResetLink(
-            $request->only('email')
-        );
-
-        return $status === Password::RESET_LINK_SENT
-            ? back()->with('status', __($status))
-            : back()->withErrors(['email' => __($status)]);
-    })->middleware('guest')->name('password.email');
-    Route::get('/reset-password/{token}', [NewPasswordController::class, 'create'])
-        ->middleware('guest')
-        ->name('password.reset');
-
-    Route::post('/reset-password', [NewPasswordController::class, 'store'])
-        ->middleware('guest')
-        ->name('password.update');
 
     Route::get('/laporan/{id}/cetak', [PDFController::class, 'cetakPDF'])->name('laporan.cetak');
 });
