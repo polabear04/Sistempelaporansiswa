@@ -144,7 +144,7 @@
                                                                                         for="foto{{ $lapor->id_laporan }}">Lampiran</label><br>
                                                                                     @if ($lapor->foto)
                                                                                         <!-- Gambar preview kecil -->
-                                                                                        <img src="{{ asset('storage/' . $lapor->foto) }}"
+                                                                                        <img src="{{ $lapor->foto }}"
                                                                                             alt="Foto Bukti"
                                                                                             class="img-thumbnail"
                                                                                             style="max-width: 150px; cursor: pointer;"
@@ -178,7 +178,7 @@
                                                                                                     </div>
                                                                                                     <div
                                                                                                         class="modal-body text-center">
-                                                                                                        <img src="{{ asset('storage/' . $lapor->foto) }}"
+                                                                                                        <img src="{{ $lapor->foto }}"
                                                                                                             alt="Foto Bukti"
                                                                                                             class="img-fluid rounded"
                                                                                                             style="max-height: 70vh; object-fit: contain;">

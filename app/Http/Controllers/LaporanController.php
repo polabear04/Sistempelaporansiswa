@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Cloudinary\Cloudinary;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Models\Chat;
@@ -57,30 +58,36 @@ class LaporanController extends Controller
         return view('dashboard.draft', compact('laporan'));
     }
 
-
     public function store(Request $request)
     {
         $request->validate([
             'nama' => 'required|string|max:255',
             'deskripsi' => 'required|string',
             'tanggal' => 'required|date',
-            'foto' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048', // validasi gambar
+            'foto' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
         $last = Laporan::orderBy('id_laporan', 'desc')->first();
-
-        if ($last) {
-            $lastNumber = (int) Str::after($last->id_laporan, 'LP-');
-            $newNumber = $lastNumber + 1;
-        } else {
-            $newNumber = 1;
-        }
-
+        $newNumber = $last ? ((int) Str::after($last->id_laporan, 'LP-') + 1) : 1;
         $newId = 'LP-' . str_pad($newNumber, 3, '0', STR_PAD_LEFT);
 
-        // Simpan gambar
-        $fotoPath = $request->file('foto')->store('bukti', 'public'); // simpan ke storage/app/public/bukti
+        // ✅ Gunakan native Cloudinary SDK, tanpa dependensi Laravel
+        $cloudinary = new Cloudinary([
+            'cloud' => [
+                'cloud_name' => 'dgfq5rcdb',
+                'api_key'    => '875336276435697',
+                'api_secret' => 'wsaEfEizLM_QDhcVS9hN2LbPyLs',
+            ],
+            'url' => [
+                'secure' => true
+            ],
+        ]);
 
+        // ✅ Upload dan ambil URL
+        $uploadResult = $cloudinary->uploadApi()->upload($request->file('foto')->getRealPath());
+        $fotoUrl = $uploadResult['secure_url'];
+
+        // ✅ Simpan ke DB
         Laporan::create([
             'id_laporan' => $newId,
             'nama'       => $request->nama,
@@ -88,11 +95,13 @@ class LaporanController extends Controller
             'tanggal'    => $request->tanggal,
             'status'     => $request->status ?? 'pending',
             'user_id'    => Auth::id(),
-            'foto'       => $fotoPath, // simpan path ke database
+            'foto'       => $fotoUrl,
         ]);
 
         return redirect()->route('draft')->with('success', 'Laporan berhasil ditambahkan!');
     }
+
+
 
     public function destroy($id)
     {
