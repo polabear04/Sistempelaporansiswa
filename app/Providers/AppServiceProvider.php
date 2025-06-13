@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\View;
 use App\Models\Chat;
 use Illuminate\Support\ServiceProvider;
@@ -22,18 +23,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        // View::composer('*', function ($view) {
-        //     $user = Auth::user();
-
-        //     if ($user && in_array($user->role, ['guru', 'murid'])) {
-        //         $chats = $user->role === 'guru'
-        //             ? Chat::with('murid')->where('guru_id', $user->id)->get()
-        //             : Chat::with('guru')->where('murid_id', $user->id)->get();
-        //     } else {
-        //         $chats = collect();
-        //     }
-
-        //     $view->with('chats', $chats);
-        // });
+        if (env('APP_ENV') === 'production') {
+            URL::forceScheme('https');
+        }
     }
 }
