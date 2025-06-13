@@ -83,12 +83,7 @@
                                                     placeholder="Masukkan Nama" required>
                                             </div>
 
-                                            <!-- Posisi -->
-                                            <div class="form-group">
-                                                <label for="posisi">Posisi</label>
-                                                <input type="text" class="form-control" id="posisi" name="posisi"
-                                                    placeholder="Masukkan Posisi" required>
-                                            </div>
+
 
                                             <!-- Alamat -->
                                             <div class="form-group">
