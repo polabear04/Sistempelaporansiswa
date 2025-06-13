@@ -45,7 +45,8 @@
         @if ($laporan->foto)
             <div class="lampiran">
                 <strong>Lampiran:</strong><br>
-                <img src="{{ public_path('storage/' . $laporan->foto) }}" alt="Lampiran">
+                <img src="{{ $laporan->foto }}" alt="Lampiran">
+
             </div>
         @endif
     </div>
