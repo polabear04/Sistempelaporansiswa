@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\PDFController;
 use Illuminate\Support\Facades\Mail;
 use App\Http\Controllers\NewPasswordController;
@@ -91,6 +92,13 @@ Route::middleware(['auth'])->group(function () {
 
     // Verifikasi via link email
     Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $request) {
+        Log::info('Verifying email', [
+            'current_url' => $request->fullUrl(),
+            'expected_host' => config('app.url'),
+            'request_host' => $request->getHost(),
+            'request_scheme' => $request->getScheme(),
+            'signature_valid' => $request->hasValidSignature()
+        ]);
         $request->fulfill();
 
         return redirect('/profile');
