@@ -9,7 +9,9 @@ class Kernel extends HttpKernel
     /**
      * Global middleware (berlaku untuk semua route).
      */
-    protected $middleware = [];
+    protected $middleware = [
+        \App\Http\Middleware\TrustProxies::class,
+    ];
 
     /**
      * Middleware groups untuk route "web" dan "api".
