@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\PDFController;
@@ -105,11 +106,20 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/laporan/{id}/cetak', [PDFController::class, 'cetakPDF'])->name('laporan.cetak');
 });
 
-Route::get('/signed-test', function () {
-    $url = URL::signedRoute('signed.check');
-    return $url;
+
+Route::get('/fix-env', function () {
+    Artisan::call('config:clear');
+    Artisan::call('cache:clear');
+    Artisan::call('route:clear');
+    Artisan::call('view:clear');
+    return '✅ Laravel config dan cache berhasil dibersihkan.';
 });
 
-Route::get('/signed-check', function () {
-    return 'Signature is valid!';
-})->name('signed.check')->middleware('signed');
+Route::get('/generate-test-link', function () {
+    $link = URL::signedRoute('signed.test');
+    return "<a href='$link'>Klik untuk uji signed URL</a><br><br>$link";
+});
+
+Route::get('/signed-test', function () {
+    return '✅ Signature valid! Signed URL bekerja dengan baik.';
+})->middleware('signed')->name('signed.test');
