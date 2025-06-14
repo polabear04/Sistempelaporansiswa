@@ -1,6 +1,5 @@
 <?php
 
-use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\PDFController;
 use Illuminate\Support\Facades\Mail;
@@ -88,12 +87,6 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/email/verification-notification', function (Request $request) {
         $request->user()->sendEmailVerificationNotification();
 
-        Log::info('Verification URL: ' . URL::temporarySignedRoute(
-            'verification.verify',
-            now()->addMinutes(60),
-            ['id' => $request->user()->id, 'hash' => sha1($request->user()->getEmailForVerification())]
-        ));
-
         return back()->with('message', 'Link verifikasi telah dikirim!');
     })->middleware(['auth', 'throttle:6,1'])->name('verification.send');
 
@@ -109,4 +102,7 @@ Route::middleware(['auth'])->group(function () {
 
 
     Route::get('/laporan/{id}/cetak', [PDFController::class, 'cetakPDF'])->name('laporan.cetak');
+});
+Route::get('/check-url', function () {
+    return config('app.url');
 });
