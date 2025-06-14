@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\PDFController;
 use Illuminate\Support\Facades\Mail;
@@ -103,13 +104,12 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('/laporan/{id}/cetak', [PDFController::class, 'cetakPDF'])->name('laporan.cetak');
 });
-Route::get('/check-url', function () {
-    return config('app.url');
+
+Route::get('/signed-test', function () {
+    $url = URL::signedRoute('signed.check');
+    return $url;
 });
-Route::get('/clear-all', function () {
-    Artisan::call('config:clear');
-    Artisan::call('config:cache');
-    Artisan::call('route:clear');
-    Artisan::call('view:clear');
-    return 'All cache cleared!';
-});
+
+Route::get('/signed-check', function () {
+    return 'Signature is valid!';
+})->name('signed.check')->middleware('signed');
