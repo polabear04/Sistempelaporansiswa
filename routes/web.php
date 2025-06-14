@@ -106,3 +106,10 @@ Route::middleware(['auth'])->group(function () {
 Route::get('/check-url', function () {
     return config('app.url');
 });
+Route::get('/clear-all', function () {
+    Artisan::call('config:clear');
+    Artisan::call('config:cache');
+    Artisan::call('route:clear');
+    Artisan::call('view:clear');
+    return 'All cache cleared!';
+});
