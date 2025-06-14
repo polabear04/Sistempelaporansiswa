@@ -20,7 +20,7 @@
     <link rel="stylesheet" href="{{ asset('dashboard/css/vertical-layout-light/style.css') }}">
 
     <!-- Favicon -->
-    <link rel="shortcut icon" href="{{ asset('dashboard/images/favicon.png') }}" />
+    <link rel="shortcut icon" href="{{ asset('dashboard/images/favicon-32x32.png') }}" />
 </head>
 
 

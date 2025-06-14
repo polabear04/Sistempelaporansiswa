@@ -11,6 +11,7 @@
         integrity="sha384-k6d4wzSIapyDyv1kpU366/PK5hCdSbCRGRCMv+eplOQJWyd1fbcAu9OCUj5zNLiq" crossorigin="anonymous">
     </script>
     <link rel="stylesheet" href="{{ asset('css/login.css') }}">
+    <link rel="shortcut icon" href="{{ asset('dashboard/images/favicon-32x32.png') }}" />
     <title>Reset Password</title>
 </head>
 
