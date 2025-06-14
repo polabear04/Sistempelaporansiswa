@@ -123,3 +123,10 @@ Route::get('/generate-test-link', function () {
 Route::get('/signed-test', function () {
     return '✅ Signature valid! Signed URL bekerja dengan baik.';
 })->middleware('signed')->name('signed.test');
+Route::get('/is-secure', function (\Illuminate\Http\Request $request) {
+    return response()->json([
+        'isSecure' => $request->isSecure(),
+        'url' => $request->fullUrl(),
+        'x_forwarded_proto' => $request->header('X-Forwarded-Proto'),
+    ]);
+});
