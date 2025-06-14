@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\PDFController;
 use Illuminate\Support\Facades\Mail;
@@ -87,18 +88,17 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/email/verification-notification', function (Request $request) {
         $request->user()->sendEmailVerificationNotification();
 
+        Log::info('Verification URL: ' . URL::temporarySignedRoute(
+            'verification.verify',
+            now()->addMinutes(60),
+            ['id' => $request->user()->id, 'hash' => sha1($request->user()->getEmailForVerification())]
+        ));
+
         return back()->with('message', 'Link verifikasi telah dikirim!');
     })->middleware(['auth', 'throttle:6,1'])->name('verification.send');
 
     // Verifikasi via link email
     Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $request) {
-        Log::info('Verifying email', [
-            'current_url' => $request->fullUrl(),
-            'expected_host' => config('app.url'),
-            'request_host' => $request->getHost(),
-            'request_scheme' => $request->getScheme(),
-            'signature_valid' => $request->hasValidSignature()
-        ]);
         $request->fulfill();
 
         return redirect('/profile');
