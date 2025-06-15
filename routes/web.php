@@ -104,29 +104,7 @@ Route::middleware(['auth'])->group(function () {
 
 
     Route::get('/laporan/{id}/cetak', [PDFController::class, 'cetakPDF'])->name('laporan.cetak');
-});
 
-
-Route::get('/fix-env', function () {
-    Artisan::call('config:clear');
-    Artisan::call('cache:clear');
-    Artisan::call('route:clear');
-    Artisan::call('view:clear');
-    return '✅ Laravel config dan cache berhasil dibersihkan.';
-});
-
-Route::get('/generate-test-link', function () {
-    $link = URL::signedRoute('signed.test');
-    return "<a href='$link'>Klik untuk uji signed URL</a><br><br>$link";
-});
-
-Route::get('/signed-test', function () {
-    return '✅ Signature valid! Signed URL bekerja dengan baik.';
-})->middleware('signed')->name('signed.test');
-Route::get('/is-secure', function (\Illuminate\Http\Request $request) {
-    return response()->json([
-        'isSecure' => $request->isSecure(),
-        'url' => $request->fullUrl(),
-        'x_forwarded_proto' => $request->header('X-Forwarded-Proto'),
-    ]);
+    Route::get('/ubah-password', [UsersController::class, 'ubahPassword'])->name('password.form');
+    Route::post('/ubah-password', [UsersController::class, 'updatePassword'])->name('password.updateLogin');
 });

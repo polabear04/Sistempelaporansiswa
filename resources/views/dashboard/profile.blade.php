@@ -7,8 +7,10 @@
             <div class="col-lg-4">
                 <div class="card mb-4">
                     <div class="card-body text-center">
-                        <img src="{{ Auth::user()->foto ? asset('img/' . Auth::user()->foto) : asset('img/profile.png') }}"
-                            alt="avatar" class="rounded-circle img-fluid" style="width: 150px;">
+                        <img src="{{ Auth::user()->foto_profile ? asset('img/' . Auth::user()->foto_profile) : asset('img/profile.png') }}"
+                            alt="avatar" class="rounded-circle img-fluid d-block mx-auto"
+                            style="width: 100px; height: 100px; object-fit: cover;">
+
                         <h5 class="my-3">{{ Auth::user()->nama }}</h5>
                         <p class="text-muted mb-1">{{ ucfirst(Auth::user()->role) }}</p>
 
@@ -56,20 +58,17 @@
                                         value="{{ Auth::user()->nama }}">
                                 </div>
                             </div>
-
                             <!-- Email -->
                             <div class="row mb-3">
                                 <label class="col-sm-3 col-form-label">Email</label>
                                 <div class="col-sm-9">
-                                    <input type="email" class="form-control" name="email"
-                                        value="{{ Auth::user()->email }}"
+                                    <input type="email" class="form-control @error('email') is-invalid @enderror"
+                                        name="email" value="{{ old('email', Auth::user()->email) }}"
                                         @if (Auth::user()->hasVerifiedEmail()) disabled @endif>
 
                                     @if (!Auth::user()->hasVerifiedEmail())
                                         <div class="mt-2">
                                             <small class="text-danger">Email belum diverifikasi.</small><br>
-
-                                            <!-- Tombol kirim ulang verifikasi -->
                                             <button type="submit" formaction="{{ route('verification.send') }}"
                                                 class="btn btn-sm btn-warning mt-1">
                                                 Kirim ulang verifikasi
@@ -82,6 +81,7 @@
                                     @endif
                                 </div>
                             </div>
+
 
 
                             <!-- Alamat -->

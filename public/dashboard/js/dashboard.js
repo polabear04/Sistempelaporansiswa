@@ -649,3 +649,16 @@ $('#example tbody').on('click', 'td.details-control', function () {
   });
  
 })(jQuery);
+    document.querySelectorAll('.toggle-password').forEach(function(toggle) {
+        toggle.addEventListener('click', function () {
+            const icon = this.querySelector('i');
+            const index = icon.getAttribute('data-index');
+            const input = document.getElementById('password' + index);
+
+            const isVisible = input.getAttribute('type') === 'text';
+            input.setAttribute('type', isVisible ? 'password' : 'text');
+
+            icon.classList.toggle('bi-eye-fill', isVisible);
+            icon.classList.toggle('bi-eye-slash-fill', !isVisible);
+        });
+    });

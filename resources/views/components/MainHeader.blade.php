@@ -6,7 +6,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>Sispes</title>
-
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
     <!-- plugins:css -->
     <link rel="stylesheet" href="{{ asset('dashboard/vendors/feather/feather.css') }}">
     <link rel="stylesheet" href="{{ asset('dashboard/vendors/ti-icons/css/themify-icons.css') }}">
@@ -43,9 +43,11 @@
 
                     <li class="nav-item nav-profile dropdown">
                         <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" id="profileDropdown">
-                            <img src="{{ Auth::user()->foto ? asset('img/' . Auth::user()->foto) : asset('img/profile.png') }}"
-                                alt="profile" />
+                            <img src="{{ Auth::user()->foto_profile ? asset('img/' . Auth::user()->foto_profile) : asset('img/profile.png') }}"
+                                alt="profile"
+                                style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover;" />
                         </a>
+
                         <div class="dropdown-menu dropdown-menu-right navbar-dropdown"
                             aria-labelledby="profileDropdown">
                             <a class="dropdown-item" href="{{ URL::to('profile') }}">
@@ -150,6 +152,10 @@
                                 @if (in_array(Auth::user()->role, ['guru', 'murid']))
                                     <li class="nav-item"> <a class="nav-link"
                                             href="{{ URL::to('profile') }}">Profile</a>
+                                    </li>
+                                    <li class="nav-item"> <a class="nav-link"
+                                            href="{{ URL::to('ubah-password') }}">Ubah
+                                            password</a>
                                     </li>
                                 @endif
                                 <li class="nav-item">
