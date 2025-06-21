@@ -123,6 +123,7 @@ class UsersController extends Controller
     }
     public function addAkun(Request $request)
     {
+
         try {
             $user = new User();
             $user->NIS = $request->input('NIS');

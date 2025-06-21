@@ -55,6 +55,11 @@
 
                                     <!-- Body dengan Form -->
                                     <div class="modal-body">
+                                        @if (session('success'))
+                                            <div class="alert alert-success mt-2">
+                                                {{ session('success') }}
+                                            </div>
+                                        @endif
                                         @if ($errors->any())
                                             <div class="alert alert-danger mt-2">
                                                 <ul>
