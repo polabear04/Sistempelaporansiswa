@@ -7,8 +7,8 @@
             <div class="col-lg-4">
                 <div class="card mb-4">
                     <div class="card-body text-center">
-                        <img src="{{ Auth::user()->foto_profile ? asset('img/' . Auth::user()->foto_profile) : asset('img/profile.png') }}"
-                            alt="avatar" class="rounded-circle img-fluid d-block mx-auto"
+                        <img src="{{ Auth::user()->foto_profile ?? asset('img/profile.png') }}" alt="avatar"
+                            class="rounded-circle img-fluid d-block mx-auto"
                             style="width: 100px; height: 100px; object-fit: cover;">
 
                         <h5 class="my-3">{{ Auth::user()->nama }}</h5>

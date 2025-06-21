@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Cloudinary\Cloudinary;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Auth;
@@ -90,29 +91,38 @@ class UsersController extends Controller
 
     public function update(Request $request, User $user)
     {
-        $request->validate([
-            'NIS' => 'required|string|max:255',
-            'nama' => 'required|string|max:255',
-            'email' => 'required|email',
-            'role' => 'required|in:admin,guru,siswa',
-            'alamat' => 'required|string',
-            'password' => 'nullable|string|min:6',
-        ]);
+        try {
+            $request->validate([
+                'NIS' => 'required|string|max:255',
+                'nama' => 'required|string|max:255',
+                'email' => 'required|email',
+                'role' => 'required|in:admin,guru,murid',
+                'alamat' => 'required|string',
+                'password' => 'nullable|string|min:6',
+            ]);
 
-        $user->NIS = $request->NIS;
-        $user->nama = $request->nama;
-        $user->email = $request->email;
-        $user->role = $request->role;
-        $user->alamat = $request->alamat;
+            $user->NIS = $request->NIS;
+            $user->nama = $request->nama;
+            $user->email = $request->email;
+            $user->role = $request->role;
+            $user->alamat = $request->alamat;
 
-        if ($request->filled('password')) {
-            $user->password = bcrypt($request->password);
+            if ($request->filled('password')) {
+                $user->password = bcrypt($request->password);
+            }
+
+            if ($user->isDirty()) {
+                $user->save();
+                return redirect()->back()->with('success', 'Data user berhasil diperbarui.');
+            } else {
+                return redirect()->back()->with('info', 'Tidak ada perubahan yang dilakukan.');
+            }
+        } catch (\Exception $e) {
+            Log::error('Gagal update user: ' . $e->getMessage());
+            return redirect()->back()->with('error', 'Gagal memperbarui user: ' . $e->getMessage());
         }
-
-        $user->save();
-
-        return redirect()->back()->with('success', 'Data user berhasil diperbarui.');
     }
+
 
     public function destroy($id)
     {
@@ -124,6 +134,16 @@ class UsersController extends Controller
     public function addAkun(Request $request)
     {
 
+        $cloudinary = new Cloudinary([
+            'cloud' => [
+                'cloud_name' => 'dgfq5rcdb',
+                'api_key'    => '875336276435697',
+                'api_secret' => 'wsaEfEizLM_QDhcVS9hN2LbPyLs',
+            ],
+            'url' => [
+                'secure' => true
+            ],
+        ]);
         try {
             $user = new User();
             $user->NIS = $request->input('NIS');
@@ -135,8 +155,11 @@ class UsersController extends Controller
 
             // Cek apakah file diupload
             if ($request->hasFile('file')) {
-                $user->foto_profile = $request->file('file')->getClientOriginalName();
-                $request->file('file')->move('img/', $user->foto_profile);
+                $uploadedFile = $request->file('file')->getRealPath();
+                $uploadResult = $cloudinary->uploadApi()->upload($uploadedFile, [
+                    'folder' => 'akun_profile' // folder opsional
+                ]);
+                $user->foto_profile = $uploadResult['secure_url']; // URL HTTPS disimpan di DB
             }
 
             $user->save();
@@ -247,7 +270,7 @@ class UsersController extends Controller
     {
         $request->validate([
             'old_password' => ['required'],
-            'new_password' => ['required', 'min:8', 'confirmed'],
+            'new_password' => ['required', 'min:6', 'confirmed'],
         ]);
 
         $user = User::find(Auth::id());

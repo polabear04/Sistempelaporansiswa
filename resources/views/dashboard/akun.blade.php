@@ -153,6 +153,12 @@
                                     {{ session('error') }}
                                 </div>
                             @endif
+                            @if (session('info'))
+                                <div class="alert alert-info">
+                                    {{ session('info') }}
+                                </div>
+                            @endif
+
                             <table class="table table-striped table-borderless">
                                 <thead>
                                     <tr>

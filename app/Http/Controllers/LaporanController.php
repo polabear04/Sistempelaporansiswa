@@ -71,7 +71,7 @@ class LaporanController extends Controller
         $newNumber = $last ? ((int) Str::after($last->id_laporan, 'LP-') + 1) : 1;
         $newId = 'LP-' . str_pad($newNumber, 3, '0', STR_PAD_LEFT);
 
-        // ✅ Gunakan native Cloudinary SDK, tanpa dependensi Laravel
+
         $cloudinary = new Cloudinary([
             'cloud' => [
                 'cloud_name' => 'dgfq5rcdb',
@@ -83,11 +83,11 @@ class LaporanController extends Controller
             ],
         ]);
 
-        // ✅ Upload dan ambil URL
+
         $uploadResult = $cloudinary->uploadApi()->upload($request->file('foto')->getRealPath());
         $fotoUrl = $uploadResult['secure_url'];
 
-        // ✅ Simpan ke DB
+
         Laporan::create([
             'id_laporan' => $newId,
             'nama'       => $request->nama,
