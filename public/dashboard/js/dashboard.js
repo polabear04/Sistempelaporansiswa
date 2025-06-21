@@ -662,3 +662,22 @@ $('#example tbody').on('click', 'td.details-control', function () {
             icon.classList.toggle('bi-eye-slash-fill', !isVisible);
         });
     });
+
+    document.querySelectorAll('.toggle-password').forEach(function (eyeIcon) {
+        eyeIcon.addEventListener('click', function () {
+            const inputId = this.querySelector('i').getAttribute('data-target');
+            const input = document.getElementById(inputId);
+            const icon = this.querySelector('i');
+
+            if (input.type === 'password') {
+                input.type = 'text';
+                icon.classList.remove('bi-eye-fill');
+                icon.classList.add('bi-eye-slash-fill');
+            } else {
+                input.type = 'password';
+                icon.classList.remove('bi-eye-slash-fill');
+                icon.classList.add('bi-eye-fill');
+            }
+        });
+    });
+

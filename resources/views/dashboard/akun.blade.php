@@ -105,10 +105,17 @@
                                             </div>
 
                                             <!-- Password -->
-                                            <div class="form-group">
+                                            <div class="form-group ">
                                                 <label for="password">Password</label>
-                                                <input type="password" class="form-control" id="password"
-                                                    name="password" placeholder="Masukkan Password" required>
+                                                <div class="input-group">
+                                                    <input type="password" class="form-control password-input"
+                                                        id="password" name="password" placeholder="Masukkan Password"
+                                                        required>
+                                                    <span class="input-group-text toggle-password"
+                                                        style="cursor: pointer">
+                                                        <i class="bi bi-eye-fill" data-target="password"></i>
+                                                    </span>
+                                                </div>
                                             </div>
 
                                             <!-- Role -->
@@ -253,15 +260,23 @@
                                                                     id="email{{ $user->id }}"
                                                                     value="{{ $user->email }}" required>
                                                             </div>
-                                                            <div class="mb-3">
+                                                            <div class="mb-3 ">
                                                                 <label for="password{{ $user->id }}"
                                                                     class="form-label">Password (opsional)</label>
-                                                                <input type="password" name="password"
-                                                                    class="form-control"
-                                                                    id="password{{ $user->id }}">
+                                                                <div class="input-group">
+                                                                    <input type="password" name="password"
+                                                                        class="form-control password-input"
+                                                                        id="password{{ $user->id }}">
+                                                                    <span class="input-group-text toggle-password"
+                                                                        style="cursor: pointer">
+                                                                        <i class="bi bi-eye-fill"
+                                                                            data-target="password{{ $user->id }}"></i>
+                                                                    </span>
+                                                                </div>
                                                                 <small class="text-muted">Kosongkan jika tidak ingin
                                                                     mengganti password</small>
                                                             </div>
+
                                                             <div class="mb-3">
                                                                 <label for="role{{ $user->id }}"
                                                                     class="form-label">Role</label>
