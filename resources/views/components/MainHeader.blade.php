@@ -125,7 +125,7 @@
                                     @endif
 
                                     {{-- Semua bisa lihat laporan --}}
-                                    <li class="nav-item"><a class="nav-link" href="{{ URL::to('draft') }}">Draft
+                                    <li class="nav-item"><a class="nav-link" href="{{ URL::to('draft') }}">Daftar
                                             Laporan</a></li>
                                 </ul>
                             </div>
